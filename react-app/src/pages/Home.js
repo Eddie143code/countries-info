@@ -1,32 +1,81 @@
-const Home = ({ search, setSearch, submitCountry, country, countryExtra }) => {
+import { useNavigate } from "react-router-dom";
+import { Oval } from "react-loading-icons";
+
+const Home = ({
+  search,
+  setSearch,
+  submitCountry,
+  country,
+  countryExtra,
+  loading,
+}) => {
+  const navigate = useNavigate(); // Add this line
   console.log(country);
   console.log(countryExtra);
   return (
     <section className="flex justify-center items-center h-[100vh] bg-[#C70039]">
-      <article className="flex flex-col gap-10 min-h-[90vh] bg-white w-[90%]">
-        <div className=" flex justify-center items-center text-[#C70039] text-2xl font-bold mt-6">
-          <h1>Countries of the world</h1>
+      <article className="flex flex-col bg-white w-[90%] max-w-[1000px] rounded-md shadow-2xl">
+        <div className="flex flex-col gap-12 min-h-[80vh]">
+          <div className=" flex justify-center items-center text-[#C70039] text-2xl font-bold mt-6 md:text-4xl lg:text-5xl">
+            <h1>Countries of the world</h1>
+          </div>
+          <div className="flex justify-center">
+            <form onSubmit={submitCountry}>
+              <input
+                placeholder="Search..."
+                className="pl-2 h-[4vh] w-[100%] border border-1 border-black rounded-md"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </form>
+          </div>
+          {country && countryExtra ? (
+            <>
+              <div className="flex justify-center">
+                <img src={countryExtra.flag} alt="flag" />
+              </div>
+              <div className="flex justify-center text-[#C70039] text-2xl font-bold ">
+                <h2 className="w-[200px]">{countryExtra.name}</h2>
+              </div>
+              <div className="flex flex-col gap-4 justify-center items-center font-bold">
+                <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
+                  Capital: {countryExtra.capital}
+                </p>
+
+                {countryExtra.language &&
+                typeof countryExtra.language === "object" ? (
+                  <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
+                    Language: {Object.values(countryExtra.language).join(", ")}
+                  </p>
+                ) : (
+                  <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
+                    Language: {countryExtra.language}
+                  </p>
+                )}
+                <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
+                  Population: {country.pop}000
+                </p>
+                <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
+                  Currency: {country.currency}
+                </p>
+              </div>
+            </>
+          ) : (
+            loading && (
+              <div className="flex justify-center">
+                <Oval stroke="black" strokeOpacity={0.5} fill="white" />
+              </div>
+            )
+          )}
         </div>
-        <div className="flex justify-center">
-          <form onSubmit={submitCountry}>
-            <input
-              placeholder="Search..."
-              className="pl-2 h-[4vh] w-[100%] border border-1 border-black rounded-md"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </form>
+        <div className="flex justify-center my-3">
+          <button
+            onClick={() => navigate(`/country/${country.name}`)}
+            className="p-3 bg-[#FF4177] text-white font-medium rounded-md"
+          >
+            Click for more
+          </button>
         </div>
-        {country && countryExtra && (
-          <>
-            <div className="flex justify-center">
-              <img src={countryExtra.flag} alt="flag" />
-            </div>
-            <div className="flex justify-center text-[#C70039] text-2xl font-bold">
-              <h2>{country.name}</h2>
-            </div>
-          </>
-        )}
       </article>
     </section>
   );
