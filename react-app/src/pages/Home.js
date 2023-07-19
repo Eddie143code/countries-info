@@ -2,7 +2,7 @@ import { Oval } from "react-loading-icons";
 
 const Home = ({ search, setSearch, submitCountry, country, loading }) => {
   return (
-    <section className="flex justify-center items-center min-h-[100vh] bg-[#C70039]">
+    <section className="flex justify-center items-center h-[100vh] bg-[#C70039]">
       <article className="flex flex-col bg-white w-[90%] max-w-[1000px] rounded-md shadow-2xl">
         <div className="flex flex-col gap-12 min-h-[80vh]">
           <div className=" flex justify-center items-center text-[#C70039] text-2xl font-bold mt-6 md:text-4xl lg:text-5xl">
@@ -28,7 +28,7 @@ const Home = ({ search, setSearch, submitCountry, country, loading }) => {
               </div>
               <div className="flex flex-col gap-4 justify-center items-center font-bold">
                 <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
-                  Capital: {country.capital}
+                  Capital: {Object.values(country.capital).join(", ")}
                 </p>
 
                 {country.language && typeof country.language === "object" ? (
