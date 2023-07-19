@@ -1,19 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { Oval } from "react-loading-icons";
 
-const Home = ({
-  search,
-  setSearch,
-  submitCountry,
-  country,
-  countryExtra,
-  loading,
-}) => {
-  const navigate = useNavigate(); // Add this line
-  console.log(country);
-  console.log(countryExtra);
+const Home = ({ search, setSearch, submitCountry, country, loading }) => {
   return (
-    <section className="flex justify-center items-center h-[100vh] bg-[#C70039]">
+    <section className="flex justify-center items-center min-h-[100vh] bg-[#C70039]">
       <article className="flex flex-col bg-white w-[90%] max-w-[1000px] rounded-md shadow-2xl">
         <div className="flex flex-col gap-12 min-h-[80vh]">
           <div className=" flex justify-center items-center text-[#C70039] text-2xl font-bold mt-6 md:text-4xl lg:text-5xl">
@@ -29,35 +18,42 @@ const Home = ({
               />
             </form>
           </div>
-          {country && countryExtra ? (
+          {country ? (
             <>
               <div className="flex justify-center">
-                <img src={countryExtra.flag} alt="flag" />
+                <img src={country.flag} alt="flag" />
               </div>
               <div className="flex justify-center text-[#C70039] text-2xl font-bold ">
-                <h2 className="w-[200px]">{countryExtra.name}</h2>
+                <h2 className="w-[200px]">{country.name}</h2>
               </div>
               <div className="flex flex-col gap-4 justify-center items-center font-bold">
                 <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
-                  Capital: {countryExtra.capital}
+                  Capital: {country.capital}
                 </p>
 
-                {countryExtra.language &&
-                typeof countryExtra.language === "object" ? (
+                {country.language && typeof country.language === "object" ? (
                   <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
-                    Language: {Object.values(countryExtra.language).join(", ")}
+                    Language: {Object.values(country.language).join(", ")}
                   </p>
                 ) : (
                   <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
-                    Language: {countryExtra.language}
+                    Language: {country.language}
                   </p>
                 )}
                 <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
-                  Population: {country.pop}000
+                  Population: {country.population}
                 </p>
                 <p className=" bg-[#FFE5B4] w-[200px] rounded-md">
-                  Currency: {country.currency}
+                  Currency: {country.region}
                 </p>
+              </div>
+              <div className="flex justify-center mb-3">
+                <a
+                  href={country.map}
+                  className="p-3 bg-[#FF4177] text-white font-medium rounded-md"
+                >
+                  See on Google Maps
+                </a>
               </div>
             </>
           ) : (
@@ -67,14 +63,6 @@ const Home = ({
               </div>
             )
           )}
-        </div>
-        <div className="flex justify-center my-3">
-          <button
-            onClick={() => navigate(`/country/${country.name}`)}
-            className="p-3 bg-[#FF4177] text-white font-medium rounded-md"
-          >
-            Click for more
-          </button>
         </div>
       </article>
     </section>
