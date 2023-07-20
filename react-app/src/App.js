@@ -8,10 +8,12 @@ function App() {
   const [country, setCountry] = useState();
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const submitCountry = async (e) => {
     e.preventDefault();
     setCountry("");
+    setError(false);
 
     setLoading(true);
     try {
@@ -30,6 +32,8 @@ function App() {
       });
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      setError(true);
     }
   };
   return (
@@ -43,6 +47,7 @@ function App() {
             submitCountry={submitCountry}
             country={country}
             loading={loading}
+            error={error}
           />
         }
       />

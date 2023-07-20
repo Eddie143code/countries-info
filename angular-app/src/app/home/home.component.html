@@ -1,0 +1,74 @@
+<section class="flex justify-center items-center h-[100vh] bg-[#C70039]">
+  <article
+    class="flex flex-col bg-white w-[90%] max-w-[1000px] rounded-md shadow-2xl"
+  >
+    <div class="flex flex-col gap-12 min-h-[80vh]">
+      <div
+        class="flex justify-center items-center text-[#C70039] text-2xl font-bold mt-6 md:text-4xl lg:text-5xl"
+      >
+        <h1>Countries of the world</h1>
+      </div>
+      <div class="flex justify-center">
+        <form (ngSubmit)="submitCountry()">
+          <input
+            placeholder="Search..."
+            class="pl-2 h-[4vh] w-[100%] border border-1 border-black rounded-md"
+            [(ngModel)]="search"
+            name="search"
+          />
+        </form>
+      </div>
+      <div *ngIf="error" class="flex justify-center text-red-600">
+        Invalid input. Try again
+      </div>
+      <ng-container *ngIf="country">
+        <div class="flex justify-center">
+          <img [src]="country.flag" alt="flag" />
+        </div>
+        <div class="flex justify-center text-[#C70039] text-2xl font-bold">
+          <h2 class="w-[220px]">{{ country.name }}</h2>
+        </div>
+        <div class="flex flex-col gap-4 justify-center items-center font-bold">
+          <p class="bg-[#FFE5B4] w-[220px] rounded-md">
+            Capital: {{ country.capital }}
+          </p>
+
+          <ng-container
+            *ngIf="
+              country.language && isObject(country.language);
+              else stringLanguage
+            "
+          >
+            <p class="bg-[#FFE5B4] w-[220px] rounded-md">
+              Language:
+              {{ getLanguageValues(country.language).join(", ") }}
+            </p>
+          </ng-container>
+          <ng-template #stringLanguage>
+            <p class="bg-[#FFE5B4] w-[220px] rounded-md">
+              Language: {{ country.language }}
+            </p>
+          </ng-template>
+
+          <p class="bg-[#FFE5B4] w-[220px] rounded-md">
+            Population: {{ country.population }}
+          </p>
+          <p class="bg-[#FFE5B4] w-[220px] rounded-md">
+            Currency: {{ country.region }}
+          </p>
+        </div>
+        <div class="flex justify-center mb-3">
+          <a
+            href="{{ country.map }}"
+            class="p-3 bg-[#FF4177] text-white font-medium rounded-md"
+          >
+            See on Google Maps
+          </a>
+        </div>
+      </ng-container>
+      <div class="flex justify-center" *ngIf="loading">
+        <p>Loading...</p>
+      </div>
+    </div>
+  </article>
+</section>

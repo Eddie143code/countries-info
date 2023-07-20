@@ -5,12 +5,14 @@ import axios from "axios";
 const country = ref("");
 const search = ref("");
 const loading = ref(false);
+const error = ref(false);
 const submitCountry = async (e) => {
   e.preventDefault();
-  loading.value = true;
-  country.value = "";
 
   try {
+    loading.value = true;
+    country.value = "";
+    error.value = false;
     const res = await axios.get(
       `https://restcountries.com/v3.1/name/${search.value}`
     );
@@ -24,9 +26,12 @@ const submitCountry = async (e) => {
       flag: res.data[0].flags.png,
       map: res.data[0].maps.googleMaps,
     };
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
+    error.value = true;
+    loading.value = false;
   }
+  loading.value = false;
 };
 </script>
 
@@ -35,7 +40,7 @@ const submitCountry = async (e) => {
     <article
       class="flex flex-col bg-white w-[90%] max-w-[1000px] rounded-md shadow-2xl"
     >
-      <div class="flex flex-col gap-12 min-h-[80vh]">
+      <div class="flex flex-col gap-8 min-h-[80vh]">
         <div
           className=" flex justify-center items-center text-[#C70039] text-2xl font-bold mt-6 md:text-4xl lg:text-5xl"
         >
@@ -49,6 +54,9 @@ const submitCountry = async (e) => {
               v-model="search"
             />
           </form>
+        </div>
+        <div v-if="error" className="flex justify-center text-red-600">
+          Invalid input. Try again
         </div>
         <template v-if="country">
           <div class="flex justify-center">
@@ -92,9 +100,7 @@ const submitCountry = async (e) => {
             </a>
           </div>
         </template>
-        <template v-else>
-          <div v-if="loading" class="flex justify-center">loading...</div>
-        </template>
+        <div v-if="loading" class="flex justify-center">loading...</div>
       </div>
     </article>
   </section>
